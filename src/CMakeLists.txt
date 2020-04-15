@@ -10,7 +10,7 @@ find_package(Boost COMPONENTS program_options REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
 # add executable file
-add_executable(cpp_calculator_app main.cpp Calculator.h)
+add_executable(cpp_calculator_app main.cpp Calculator.h Calculator.cpp)
 target_link_libraries(cpp_calculator_app ${Boost_LIBRARIES})
 
 # engage CTest
@@ -21,7 +21,7 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 # test executable
-add_executable(cpp_calculator_test test.cpp Calculator.h)
+add_executable(cpp_calculator_test test.cpp Calculator.h Calculator.cpp)
 target_link_libraries(cpp_calculator_test ${GTEST_LIBRARIES} pthread)
 
 # add CTest file
