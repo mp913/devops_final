@@ -22,7 +22,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 # test executable
 add_executable(cpp_calculator_test test.cpp Calculator.h Calculator.cpp)
-target_link_libraries(cpp_calculator_test ${GTEST_LIBRARIES} pthread)
+target_link_libraries(cpp_calculator_test ${GTEST_LIBRARIES} pthread gtest_main)
 
 # add CTest file
 add_test(NAME CppCalculatorTest COMMAND cpp_calculator_test)
