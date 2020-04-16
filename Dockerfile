@@ -1,42 +1,39 @@
 FROM gcc:latest as build
 
-WORKDIR /build
+WORKDIR /gtest_build
 
-# download packages
 RUN apt-get update && \
     apt-get install -y \
-#      libboost-dev libboost-program-options-dev \
-#      libgtest-dev \
-      cmake
-#    && \
-#    #cmake -DCMAKE_BUILD_TYPE=Release /usr/src/gtest && \
-#    cmake --build . && \
-#    mv lib*.a /usr/lib
+      libboost-dev libboost-program-options-dev \
+      libgtest-dev \
+      cmake \
+    && \
+    cmake -DCMAKE_BUILD_TYPE=Release /usr/src/gtest && \
+    cmake --build . && \
+    mv lib*.a /usr/lib
 
-# copy directory /src into container
+# copy /src to container
 ADD ./src /app/src
 
-# build directory set up
+# set up workdir for build
 WORKDIR /app/build
 
-# project build
+# build and test
 RUN cmake ../src && \
-    cmake --build .
+    cmake --build . && \
+    CTEST_OUTPUT_ON_FAILURE=TRUE cmake --build . --target test
 
-# run ---------------------------------------
-
-# use ubuntu:latest
 FROM ubuntu:latest
 
-# add user
+# add user due safety reasons
 RUN groupadd -r sample && useradd -r -g sample sample
 USER sample
 
 # set up workdir
 WORKDIR /app
 
-# copy app into workdir
-COPY --from=build /app/build/deanery_app .
+# copy app to workdir
+COPY --from=build /app/build/cpp_calculator_app .
 
-# set up entry point
-ENTRYPOINT ["./deanery_app"]
+# Set up entry point
+ENTRYPOINT ["./cpp_calculator_app"]
