@@ -13,9 +13,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - run: echo "Let's work" 
-    - name: build and test
-      run: docker build -t cpp-sample .
-    - name: run
+    - name: say 'Hi'
+      run: echo "Let's work" 
+    - name: build test docker
+      run: |
+        cd test/
+        docker build -t cpp-sample .
+    - name: run test docker
       run: docker run cpp-sample
+    - name: build clean docker
+      run: docker build -t alcatraz913/automated_pipeline_training:ver_$GITHUB_RUN_NUMBER .    
       
