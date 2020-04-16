@@ -13,18 +13,44 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      
     - name: say 'Hi'
       run: echo "Let's work" 
+      
     - name: build test docker
       run: |
         cd test/
         docker build -t cpp-sample .
+        
     - name: run test docker      
       run: docker run cpp-sample
+      
+    - name: set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.8'
+      
+    - name: codestyle checking
+      run: |
+        python -m pip install --upgrade pip
+        pip install cpplint
+             
+        cpplint --verbose=2 src/Calculator.h
+        cpplint --verbose=2 src/Calculator.cpp
+        cpplint --verbose=2 src/main.cpp
+        cpplint --verbose=2 src/test.cpp
+        
+    - name: upload
+      run: |
+        echo ${{ secrets.DOCKER_LOGIN }}
+        docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+        docker push 1205200012052000/hse_devops_deanery:ver_$GITHUB_RUN_NUMBER
+        
     - name: build clean docker
       run: |
         cd clean/
         docker build -t alcatraz913/automated_pipeline_training:ver_$GITHUB_RUN_NUMBER .
+        
     - name: upload to DockerHub
       run: |
         echo SIgned as ${{ secrets.DOCKER_LOGIN }}
