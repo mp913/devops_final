@@ -30,11 +30,12 @@ jobs:
       with:
         python-version: '3.8'
       
-    - name: codestyle checking
+    - name: code style checking
       run: |
         python -m pip install --upgrade pip
         pip install cpplint
              
+        cd ./test
         cpplint --verbose=2 src/Calculator.h
         cpplint --verbose=2 src/Calculator.cpp
         cpplint --verbose=2 src/main.cpp
