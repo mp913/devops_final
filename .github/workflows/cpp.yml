@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: echo "Let's work" 
     - name: build and test
-      run: docker build cpp-sample -t .
+      run: docker build -t cpp-sample .
     - name: run
       run: docker run cpp-sample
       
