@@ -39,13 +39,7 @@ jobs:
         cpplint --verbose=2 src/Calculator.cpp
         cpplint --verbose=2 src/main.cpp
         cpplint --verbose=2 src/test.cpp
-        
-    - name: upload
-      run: |
-        echo ${{ secrets.DOCKER_LOGIN }}
-        docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
-        docker push 1205200012052000/hse_devops_deanery:ver_$GITHUB_RUN_NUMBER
-        
+              
     - name: build clean docker
       run: |
         cd clean/
