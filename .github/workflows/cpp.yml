@@ -19,8 +19,10 @@ jobs:
       run: |
         cd test/
         docker build -t cpp-sample .
-    - name: run test docker
+    - name: run test docker      
       run: docker run cpp-sample
     - name: build clean docker
-      run: docker build -t alcatraz913/automated_pipeline_training:ver_$GITHUB_RUN_NUMBER .    
+      run: |
+        cd ../clean
+        docker build -t alcatraz913/automated_pipeline_training:ver_$GITHUB_RUN_NUMBER .    
       
