@@ -1,10 +1,11 @@
+//"Copyright 2020 Maxim Zarkov" 
+
 #pragma once
 class Calculator
 {
 	int id;
 public:
-	Calculator(int id) 
-	{ 
+	explicit Calculator(int id) { 
 		this->id = id;
 	}
 	int sum(int a, int b);

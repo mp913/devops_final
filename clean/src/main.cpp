@@ -1,3 +1,5 @@
+//"Copyright 2020 Maxim Zarkov" 
+
 #include <iostream>
 #include "Calculator.h"
 int main()
