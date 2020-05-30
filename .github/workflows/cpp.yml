@@ -22,6 +22,7 @@ jobs:
         docker build -t cpp-sample .
         
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: run test docker      
@@ -44,6 +45,7 @@ jobs:
         cpplint --verbose=5 src/test.cpp
 
   clean_build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - name: build clean docker
@@ -58,6 +60,7 @@ jobs:
         docker push alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER
         
   CD:
+    needs: clean_build
     runs-on: self-hosted
     steps:
       - name: run clean docker
