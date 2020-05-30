@@ -65,7 +65,7 @@ jobs:
         
   CD:
     needs: clean_build
-    runs-on: self-hosted
+    runs-on: potat
     steps:
       - uses: actions/checkout@v2
       - name: run clean docker
