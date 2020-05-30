@@ -72,7 +72,8 @@ jobs:
       - name: run clean docker
         run: |
           cd clean/
-          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+           docker login --username foo --password-stdin
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username=${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker pull alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER
           docker run alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER . > artifatcs_log.txt
       
