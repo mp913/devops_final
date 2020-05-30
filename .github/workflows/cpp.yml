@@ -45,6 +45,7 @@ jobs:
     steps:
     - name: build clean docker
       run: |
+        ls -la
         cd clean/
         docker build -t alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER .
         
