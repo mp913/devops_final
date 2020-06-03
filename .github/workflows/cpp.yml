@@ -42,7 +42,7 @@ jobs:
         cpplint --verbose=5 src/test.cpp
 
   clean_build:
-    #needs: build_and_test
+    needs: build_and_test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
