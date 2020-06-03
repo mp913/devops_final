@@ -1,0 +1,81 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: print debug info
+      run: |
+        pwd
+        ls -la 
+      
+    - name: build test docker
+      run: |
+        cd test/
+        docker build -t cpp-sample .
+
+    - name: run test docker      
+      run: docker run cpp-sample
+      
+    - name: set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.8'
+      
+    - name: code style checking
+      run: |
+        python -m pip install --upgrade pip
+        pip install cpplint
+             
+        cd ./test
+        cpplint --verbose=5 src/Calculator.h
+        cpplint --verbose=5 src/Calculator.cpp
+        cpplint --verbose=5 src/main.cpp
+        cpplint --verbose=5 src/test.cpp
+
+  clean_build:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: print debug info
+      run: |
+        pwd
+        ls -la 
+          
+    - name: build clean docker
+      run: |
+        ls -la
+        cd clean/
+        docker build -t alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER .
+        
+    - name: upload to DockerHub
+      run: |
+        echo SIgned as ${{ secrets.DOCKER_LOGIN }}
+        docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+        docker push alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER
+        
+  CD:
+    needs: clean_build
+    runs-on: potat
+    steps:
+      - uses: actions/checkout@v2
+      - name: run clean docker
+        run: |
+          cd clean/
+          docker pull alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER
+          docker run alcatraz913/final_devops_lab:ver_$GITHUB_RUN_NUMBER . > artifatcs_log.txt
+      
+      - name: Upload results to artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: CD_result
+          path: clean/artifatcs_log.txt 

@@ -1,3 +1,5 @@
+//"Copyright 2020 Maxim Zarkov" 
+
 //#include "pch.h"
 #include "gtest/gtest.h"
 #include "Calculator.h"
